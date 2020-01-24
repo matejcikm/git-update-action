@@ -1,0 +1,19 @@
+#!/bin/sh
+
+set -e
+
+SOURCE_REPO=$1
+SOURCE_BRANCH=$2
+DESTINATION_REPO="$3"
+DESTINATION_BRANCH="$4"
+
+GIT_SSH_COMMAND="ssh -v"
+
+echo "SOURCE=$SOURCE_REPO:$SOURCE_BRANCH"
+echo "DESTINATION=$DESTINATION_REPO:$DESTINATION_BRANCH"
+
+git clone "$DESTINATION_REPO"
+cd `basename "$DESTINATION_REPO" .git`
+git remote add source "$DESTINATION_REPO"
+git pull source "${DESTINATION_BRANCH}:${SOURCE_BRANCH}" -ff
+git push origin 
